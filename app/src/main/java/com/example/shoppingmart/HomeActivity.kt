@@ -46,20 +46,21 @@ val bannerColors = listOf(
 )
 
 val bannerTexts = listOf(
-    "🛍️ Summer Sale — Up to 50% Off!",
-    "👗 New Arrivals Just Dropped!",
-    "🚀 Free Shipping on Orders $30+",
-    "🍕 Fresh Food Deals Every Day!"
+    "🔥 Hot Deals Today!",
+    "👗 New Arrivals",
+    "🍕 Fresh Food Items",
+    "⚡ Flash Sale 50% Off"
 )
 
 @Composable
 fun HomeScreen(onProductClick: () -> Unit) {
-    val pink = Color(0xFFE91E63)
     var currentBanner by remember { mutableIntStateOf(0) }
+    val pink = Color(0xFFE91E63)
 
+    // Auto-slide every 1 second
     LaunchedEffect(Unit) {
         while (true) {
-            delay(2000)
+            delay(1000)
             currentBanner = (currentBanner + 1) % bannerColors.size
         }
     }
@@ -70,7 +71,7 @@ fun HomeScreen(onProductClick: () -> Unit) {
         Box(
             modifier = Modifier.fillMaxWidth().background(pink).padding(16.dp)
         ) {
-            Text("ShoppingMart", color = Color.White, fontSize = 22.sp, fontWeight = FontWeight.Bold)
+            Text("ShoppingMart", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = Color.White)
         }
 
         // Sliding Banner
@@ -79,15 +80,15 @@ fun HomeScreen(onProductClick: () -> Unit) {
                 .fillMaxWidth()
                 .height(180.dp)
                 .padding(16.dp)
-                .clip(RoundedCornerShape(16.dp))
+                .clip(RoundedCornerShape(12.dp))
                 .background(bannerColors[currentBanner]),
             contentAlignment = Alignment.Center
         ) {
-            Text(bannerTexts[currentBanner], color = Color.White,
-                fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text(bannerTexts[currentBanner], fontSize = 22.sp,
+                fontWeight = FontWeight.Bold, color = Color.White)
         }
 
-        // Banner dots
+        // Dots indicator
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
@@ -96,9 +97,9 @@ fun HomeScreen(onProductClick: () -> Unit) {
                 Box(
                     modifier = Modifier
                         .padding(4.dp)
-                        .size(if (index == currentBanner) 12.dp else 8.dp)
+                        .size(if (index == currentBanner) 10.dp else 6.dp)
                         .clip(CircleShape)
-                        .background(if (index == currentBanner) pink else Color.Gray)
+                        .background(if (index == currentBanner) pink else Color.LightGray)
                 )
             }
         }
@@ -106,56 +107,58 @@ fun HomeScreen(onProductClick: () -> Unit) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Categories
-        Text("  Categories", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        Text("Categories", fontSize = 18.sp, fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp))
         Spacer(modifier = Modifier.height(8.dp))
+
         LazyRow(contentPadding = PaddingValues(horizontal = 16.dp)) {
-            val categories = listOf("All", "Clothes", "Food", "Electronics", "Shoes")
-            items(categories.size) { i ->
+            items(4) { index ->
+                val labels = listOf("Clothes", "Food", "Electronics", "Books")
+                val colors = listOf(Color(0xFFFF8A80), Color(0xFFFFD180),
+                    Color(0xFF80D8FF), Color(0xFFCCFF90))
                 Box(
                     modifier = Modifier
-                        .padding(end = 8.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(if (i == 0) pink else Color.White)
-                        .clickable { }
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .padding(end = 12.dp)
+                        .size(80.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(colors[index])
+                        .clickable { onProductClick() },
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(categories[i], color = if (i == 0) Color.White else Color.Black)
+                    Text(labels[index], fontSize = 12.sp, fontWeight = FontWeight.Bold)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Products grid
-        Text("  Featured Products", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+        // Featured Products
+        Text("Featured Products", fontSize = 18.sp, fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp))
         Spacer(modifier = Modifier.height(8.dp))
 
-        val products = listOf("👕 T-Shirt", "👟 Sneakers", "🍕 Pizza", "👗 Dress", "📱 Phone", "🎧 Headphones")
-        val prices = listOf("$19.99", "$59.99", "$12.99", "$39.99", "$299.99", "$49.99")
-
-        Column(modifier = Modifier.padding(horizontal = 16.dp)) {
-            for (row in 0 until 3) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                    for (col in 0..1) {
-                        val index = row * 2 + col
-                        Card(
-                            modifier = Modifier.weight(1f).clickable { onProductClick() },
-                            shape = RoundedCornerShape(12.dp),
-                            elevation = CardDefaults.cardElevation(4.dp)
+        LazyRow(contentPadding = PaddingValues(horizontal = 16.dp)) {
+            items(5) { index ->
+                val names = listOf("T-Shirt", "Pizza", "Headphones", "Novel", "Sneakers")
+                val prices = listOf("$15", "$8", "$49", "$12", "$60")
+                Card(
+                    modifier = Modifier.padding(end = 12.dp).width(130.dp).clickable { onProductClick() },
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = CardDefaults.cardElevation(4.dp)
+                ) {
+                    Column(modifier = Modifier.padding(12.dp)) {
+                        Box(
+                            modifier = Modifier.fillMaxWidth().height(80.dp)
+                                .clip(RoundedCornerShape(8.dp)).background(Color(0xFFEEEEEE)),
+                            contentAlignment = Alignment.Center
                         ) {
-                            Column(
-                                modifier = Modifier.padding(16.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(products[index], fontSize = 32.sp)
-                                Spacer(modifier = Modifier.height(8.dp))
-                                Text(products[index].drop(3), fontWeight = FontWeight.Medium)
-                                Text(prices[index], color = pink, fontWeight = FontWeight.Bold)
-                            }
+                            Text("🛍️", fontSize = 32.sp)
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(names[index], fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        Text(prices[index], color = pink, fontSize = 14.sp)
                     }
                 }
-                Spacer(modifier = Modifier.height(12.dp))
             }
         }
     }
