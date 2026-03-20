@@ -1,14 +1,30 @@
-package com.example.shoppingmart
+package com.example.shoppingmart.view
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.shoppingmart.view.SignUpActivity
 import com.example.shoppingmart.model.LoginState
 import com.example.shoppingmart.ui.theme.ShoppingMartTheme
 import com.example.shoppingmart.viewmodel.LoginViewModel
@@ -65,42 +82,53 @@ fun LoginScreen(
     val errorMessage = (loginState as? LoginState.Error)?.message
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(24.dp),
+        modifier = Modifier.Companion.fillMaxSize().padding(24.dp),
         verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.Companion.CenterHorizontally
     ) {
-        Text("ShoppingMart", fontSize = 28.sp, fontWeight = FontWeight.Bold, color = pink)
-        Spacer(Modifier.height(32.dp))
+        Text("ShoppingMart", fontSize = 28.sp, fontWeight = FontWeight.Companion.Bold, color = pink)
+        Spacer(Modifier.Companion.height(32.dp))
 
-        OutlinedTextField(value = email, onValueChange = { email = it },
-            label = { Text("Email") }, modifier = Modifier.fillMaxWidth(),
-            singleLine = true, enabled = !isLoading)
-        Spacer(Modifier.height(12.dp))
+        OutlinedTextField(
+            value = email, onValueChange = { email = it },
+            label = { Text("Email") }, modifier = Modifier.Companion.fillMaxWidth(),
+            singleLine = true, enabled = !isLoading
+        )
+        Spacer(Modifier.Companion.height(12.dp))
 
-        OutlinedTextField(value = password, onValueChange = { password = it },
+        OutlinedTextField(
+            value = password, onValueChange = { password = it },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(), singleLine = true, enabled = !isLoading)
-        Spacer(Modifier.height(8.dp))
+            modifier = Modifier.Companion.fillMaxWidth(), singleLine = true, enabled = !isLoading
+        )
+        Spacer(Modifier.Companion.height(8.dp))
 
         if (errorMessage != null) {
-            Text(errorMessage, color = MaterialTheme.colorScheme.error,
+            Text(
+                errorMessage, color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodySmall,
-                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp))
+                modifier = Modifier.Companion.fillMaxWidth().padding(vertical = 4.dp)
+            )
         }
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.Companion.height(12.dp))
 
-        Button(onClick = { onLoginClick(email, password) },
-            modifier = Modifier.fillMaxWidth().height(50.dp),
+        Button(
+            onClick = { onLoginClick(email, password) },
+            modifier = Modifier.Companion.fillMaxWidth().height(50.dp),
             colors = ButtonDefaults.buttonColors(containerColor = pink),
             enabled = !isLoading
         ) {
             if (isLoading) {
-                CircularProgressIndicator(color = Color.White,
-                    strokeWidth = 2.dp, modifier = Modifier.size(20.dp))
-            } else { Text("Log In") }
+                CircularProgressIndicator(
+                    color = Color.Companion.White,
+                    strokeWidth = 2.dp, modifier = Modifier.Companion.size(20.dp)
+                )
+            } else {
+                Text("Log In")
+            }
         }
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.Companion.height(16.dp))
 
         TextButton(onClick = onSignUpClick, enabled = !isLoading) {
             Text("Don't have an account? Sign Up", color = pink)

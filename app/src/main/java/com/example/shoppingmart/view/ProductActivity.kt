@@ -1,4 +1,4 @@
-package com.example.shoppingmart
+package com.example.shoppingmart.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,15 +6,30 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.shoppingmart.view.ProductDetailActivity
 import com.example.shoppingmart.ui.theme.ShoppingMartTheme
 
 data class Product(
@@ -79,15 +95,22 @@ fun ProductScreen(onProductClick: (Product) -> Unit, onBackClick: () -> Unit) {
                 it.category.contains(searchQuery, ignoreCase = true)
     }
 
-    Column(modifier = Modifier.fillMaxSize().background(Color(0xFFF5F5F5))) {
+    Column(modifier = Modifier.Companion.fillMaxSize().background(Color(0xFFF5F5F5))) {
 
         // Top Bar
-        Box(modifier = Modifier.fillMaxWidth().background(pink).padding(16.dp)) {
-            Icon(Icons.Default.ArrowBack, contentDescription = "Back",
-                tint = Color.White,
-                modifier = Modifier.align(Alignment.CenterStart).clickable { onBackClick() })
-            Text("Products", fontSize = 20.sp, fontWeight = FontWeight.Bold,
-                color = Color.White, modifier = Modifier.align(Alignment.Center))
+        Box(modifier = Modifier.Companion.fillMaxWidth().background(pink).padding(16.dp)) {
+            Icon(
+                Icons.Default.ArrowBack, contentDescription = "Back",
+                tint = Color.Companion.White,
+                modifier = Modifier.Companion.align(Alignment.Companion.CenterStart)
+                    .clickable { onBackClick() })
+            Text(
+                "Products",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Companion.Bold,
+                color = Color.Companion.White,
+                modifier = Modifier.Companion.align(Alignment.Companion.Center)
+            )
         }
 
         // Search Bar
@@ -95,7 +118,7 @@ fun ProductScreen(onProductClick: (Product) -> Unit, onBackClick: () -> Unit) {
             value = searchQuery,
             onValueChange = { searchQuery = it },
             label = { Text("Search products...") },
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier.Companion.fillMaxWidth().padding(16.dp),
             shape = RoundedCornerShape(12.dp)
         )
 
@@ -108,23 +131,27 @@ fun ProductScreen(onProductClick: (Product) -> Unit, onBackClick: () -> Unit) {
         ) {
             items(filtered) { product ->
                 Card(
-                    modifier = Modifier.fillMaxWidth().clickable { onProductClick(product) },
-                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.Companion.fillMaxWidth()
+                        .clickable { onProductClick(product) },
+                    shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp),
                     elevation = CardDefaults.cardElevation(4.dp)
                 ) {
-                    Column(modifier = Modifier.padding(12.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally) {
+                    Column(
+                        modifier = Modifier.Companion.padding(12.dp),
+                        horizontalAlignment = Alignment.Companion.CenterHorizontally
+                    ) {
                         Box(
-                            modifier = Modifier.fillMaxWidth().height(90.dp)
-                                .clip(RoundedCornerShape(8.dp)).background(Color(0xFFEEEEEE)),
-                            contentAlignment = Alignment.Center
+                            modifier = Modifier.Companion.fillMaxWidth().height(90.dp)
+                                .clip(androidx.compose.foundation.shape.RoundedCornerShape(8.dp))
+                                .background(Color(0xFFEEEEEE)),
+                            contentAlignment = Alignment.Companion.Center
                         ) {
                             Text(product.emoji, fontSize = 40.sp)
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(product.name, fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                        Spacer(modifier = Modifier.Companion.height(8.dp))
+                        Text(product.name, fontWeight = FontWeight.Companion.Bold, fontSize = 14.sp)
                         Text(product.price, color = pink, fontSize = 14.sp)
-                        Text(product.category, fontSize = 11.sp, color = Color.Gray)
+                        Text(product.category, fontSize = 11.sp, color = Color.Companion.Gray)
                     }
                 }
             }
